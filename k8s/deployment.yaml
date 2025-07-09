@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vdlg-customer
+  namespace: tremligeiro
+spec:
+  selector:
+    matchLabels:
+      app: vdlg-customer
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+  template:
+    metadata:
+      annotations:
+        kubernetes.io/change-cause: "UPDATE"
+      labels:
+        app: vdlg-customer
+        environment: "dev"
+        version: "1.0.0"
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: vdlg-customer
+          image: tbtec/vdlg-customer:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 4
+            successThreshold: 1
+          envFrom:
+            - configMapRef:
+                name: vdlg-customer-config
+            - secretRef:
+                name: vdlg-customer-secret
+          resources:
+            requests:
+              memory: "80Mi"
+              cpu: "80m"
+            limits:
+              memory: "400Mi"
+              cpu: "200m"
+      terminationGracePeriodSeconds: 30
+      nodeSelector: {}
+      tolerations: []
