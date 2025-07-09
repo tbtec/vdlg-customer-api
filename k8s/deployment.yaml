@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vdlg-customer
-  namespace: tremligeiro
+  namespace: vdlg
 spec:
   selector:
     matchLabels:
