@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tremligeiro-customer
+  name: vdlg-customer
   namespace: tremligeiro
   labels:
-    app: tremligeiro-customer
+    app: vdlg-customer
     environment: "dev"
 spec:
   type: LoadBalancer
@@ -14,4 +14,4 @@ spec:
       targetPort: 8080
       protocol: "TCP"
   selector:
-    app: tremligeiro-customer
+    app: vdlg-customer

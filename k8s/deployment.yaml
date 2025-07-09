@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tremligeiro-customer
+  name: vdlg-customer
   namespace: tremligeiro
 spec:
   selector:
     matchLabels:
-      app: tremligeiro-customer
+      app: vdlg-customer
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -17,14 +17,14 @@ spec:
       annotations:
         kubernetes.io/change-cause: "UPDATE"
       labels:
-        app: tremligeiro-customer
+        app: vdlg-customer
         environment: "dev"
         version: "1.0.0"
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: tremligeiro-customer
-          image: tbtec/tremligeiro-customer:1.0.0
+        - name: vdlg-customer
+          image: tbtec/vdlg-customer:1.0.0
           imagePullPolicy: Always
           ports:
             - name: http
@@ -41,9 +41,9 @@ spec:
             successThreshold: 1
           envFrom:
             - configMapRef:
-                name: tremligeiro-customer-config
+                name: vdlg-customer-config
             - secretRef:
-                name: tremligeiro-customer-secret
+                name: vdlg-customer-secret
           resources:
             requests:
               memory: "80Mi"
